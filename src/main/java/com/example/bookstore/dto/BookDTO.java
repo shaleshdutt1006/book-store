@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.validation.constraints.*;
 
 @Data
+@NoArgsConstructor
 public class BookDTO {
     @NotEmpty(message = "Book Name is mandatory")
     @Pattern(regexp = "^[A-Z]{1}.{2,}$", message = "Book Name Invalid")

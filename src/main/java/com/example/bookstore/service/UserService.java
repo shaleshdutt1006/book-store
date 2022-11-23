@@ -2,7 +2,7 @@ package com.example.bookstore.service;
 
 import com.example.bookstore.dto.LoginDTO;
 import com.example.bookstore.dto.UserDTO;
-import com.example.bookstore.exception.UserException;
+import com.example.bookstore.exception.CustomException;
 import com.example.bookstore.model.User;
 import com.example.bookstore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class UserService implements UserIService {
         if (user.isPresent()) {
             return user;
         } else {
-            throw new UserException("this userId is not Present");
+            throw new CustomException("this userId is not Present");
         }
     }
 
@@ -42,7 +42,7 @@ public class UserService implements UserIService {
         if (user.isPresent()) {
             return user;
         } else {
-            throw new UserException("This emailId is not present");
+            throw new CustomException("This emailId is not present");
         }
     }
 
@@ -51,7 +51,7 @@ public class UserService implements UserIService {
     public List<User> getAll() {
         if (!userRepository.findAll().isEmpty()) {
             return userRepository.findAll();
-        } else throw new UserException("No User Present in the database");
+        } else throw new CustomException("No User Present in the database");
     }
 
     //Method to reset the password of user using emailId
@@ -63,7 +63,7 @@ public class UserService implements UserIService {
             user.setPassword(loginDTO.getPassword());
             userRepository.save(user);
             return user;
-        } else throw new UserException("No User present of this emailId for resetting Password");
+        } else throw new CustomException("No User present of this emailId for resetting Password");
     }
 
     //Method to update user details by using emailId
@@ -78,7 +78,7 @@ public class UserService implements UserIService {
             foundUser.setAddress(foundUser.getAddress());
             userRepository.save(foundUser);
             return userRepository.getByEmailId(emailId).get();
-        } else throw new UserException("User not present of this emailId");
+        } else throw new CustomException("User not present of this emailId");
 
     }
 
@@ -88,7 +88,7 @@ public class UserService implements UserIService {
         Optional<User> loginDetails = userRepository.getLoginDetails(loginDTO.getEmailId(), loginDTO.getPassword());
         if (loginDetails.isPresent()) {
             return "Login Successfully for user : " + loginDetails;
-        } else throw new UserException("Invalid login details try again");
+        } else throw new CustomException("Invalid login details try again");
     }
 
 }

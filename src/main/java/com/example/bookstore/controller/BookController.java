@@ -35,7 +35,6 @@ public class BookController {
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
 
     }
-
     //Method to get book by bookName
     @GetMapping("/getbyBookName")
     public ResponseEntity<ResponseDTO> getByBookName(@RequestParam String bookName) {

@@ -1,7 +1,7 @@
 package com.example.bookstore.service;
 
 import com.example.bookstore.dto.BookDTO;
-import com.example.bookstore.exception.UserException;
+import com.example.bookstore.exception.CustomException;
 import com.example.bookstore.model.Book;
 import com.example.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class BookService implements BookIService {
         if (book.isPresent()) {
             return book;
         } else {
-            throw new UserException("this bookId is not Present");
+            throw new CustomException("this bookId is not Present");
         }
     }
 
@@ -42,7 +42,7 @@ public class BookService implements BookIService {
         if (book.isPresent()) {
             return book;
         } else {
-            throw new UserException("Book of this name is not present");
+            throw new CustomException("Book of this name is not present");
         }
     }
 
@@ -51,7 +51,7 @@ public class BookService implements BookIService {
     public List<Book> getAll() {
         if (!bookStoreRepository.findAll().isEmpty()) {
             return bookStoreRepository.findAll();
-        } else throw new UserException("No Book Present in the database");
+        } else throw new CustomException("No Book Present in the database");
     }
 
     //Method to update book quantity using bookID
@@ -61,7 +61,7 @@ public class BookService implements BookIService {
             bookStoreRepository.updateQuantity(bookId, quantity);
             return getByBookId(bookId);
         } else {
-            throw new UserException("Book not present of this Id");
+            throw new CustomException("Book not present of this Id");
         }
     }
 
@@ -73,7 +73,7 @@ public class BookService implements BookIService {
             Book updatedBook = new Book(bookId, bookDTO);
             bookStoreRepository.save(updatedBook);
             return updatedBook;
-        } else throw new UserException("Book not present of this Id");
+        } else throw new CustomException("Book not present of this Id");
     }
 
     //Method to delete book details by using bookId
@@ -83,7 +83,7 @@ public class BookService implements BookIService {
         if (book.isPresent()) {
             bookStoreRepository.deleteById(bookId);
             return bookStoreRepository.findAll();
-        } else throw new UserException("Book not present of this Id");
+        } else throw new CustomException("Book not present of this Id");
     }
 
     //Method to sort book by its price in ascending order
@@ -91,7 +91,7 @@ public class BookService implements BookIService {
     public List<Book> sortedInAsc() {
         List<Book> sortedList = bookStoreRepository.sortedInAsc();
         if (sortedList.isEmpty()) {
-            throw new UserException("Book not present for sorting");
+            throw new CustomException("Book not present for sorting");
         } else return sortedList;
     }
 
@@ -100,7 +100,7 @@ public class BookService implements BookIService {
     public List<Book> sortedInDesc() {
         List<Book> sortedList = bookStoreRepository.sortedInDesc();
         if (sortedList.isEmpty()) {
-            throw new UserException("Book not present for sorting");
+            throw new CustomException("Book not present for sorting");
         } else return sortedList;
 
 
