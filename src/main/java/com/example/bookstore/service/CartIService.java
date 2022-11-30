@@ -22,7 +22,7 @@ public interface CartIService {
 
 
     //Method to update by id in database
-    Optional<Cart> updateById(Long cartId, CartDTO cartDTO);
+    Cart updateById(Long cartId, CartDTO cartDTO);
 
     //Method to update quantity of Cart
     Optional<Cart> updateQuantityById(Long cartId, int quantity);

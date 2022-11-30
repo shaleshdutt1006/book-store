@@ -34,5 +34,5 @@ public class UserDTO {
             " and one special character and no whitespace allowed between characters")
     private String password;
 
-///^[\\w+-]+(\\.[\\w-]+)*@[^_\\W]+(\\.[^_\\W]+)?(?=(\\.[^_\\W]{3,}$|\\.[a-zA-Z]{2}$)).*$"
+
 }

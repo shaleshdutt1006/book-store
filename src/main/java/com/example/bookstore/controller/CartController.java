@@ -29,7 +29,7 @@ public class CartController {
 
     //Method to get book by bookId
     @GetMapping("/getbyId/{cartId}")
-    public ResponseEntity<ResponseDTO> getByCartId(@PathVariable Long cartId) {
+    public ResponseEntity<ResponseDTO> getByCartId(@PathVariable Long cartId,@RequestParam String token) {
         Optional<Cart> foundedItem = cartIService.getById(cartId);
         ResponseDTO responseDTO = new ResponseDTO("Get call userId successfully", foundedItem);
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
@@ -48,16 +48,16 @@ public class CartController {
     //Method to update list using body
     @PutMapping("/updateById/{cartId}")
     public ResponseEntity<ResponseDTO> updateById(@Valid @PathVariable Long cartId, @RequestBody CartDTO cartDTO) {
-       Optional<Cart> updatedQuantity = cartIService.updateById(cartId, cartDTO);
+       Cart updatedQuantity = cartIService.updateById(cartId, cartDTO);
         ResponseDTO responseDTO = new ResponseDTO("update quantity successfully", updatedQuantity);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Method to update quantity of cart by using cartId
-    @PutMapping("/updateQuantity{cartId}")
+    @PutMapping("/updateQuantity/{cartId}")
     public ResponseEntity<ResponseDTO> updateQuantityById(@Valid @PathVariable Long cartId, @RequestParam int quantity) {
         Optional<Cart> updatedCart = cartIService.updateQuantityById(cartId, quantity);
-        ResponseDTO responseDTO = new ResponseDTO("Updated book successfully", updatedCart);
+        ResponseDTO responseDTO = new ResponseDTO("Updated successfully", updatedCart);
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
 

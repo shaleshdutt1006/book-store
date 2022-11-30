@@ -8,6 +8,7 @@ import com.example.bookstore.model.User;
 import com.example.bookstore.repository.BookRepository;
 import com.example.bookstore.repository.CartRepository;
 import com.example.bookstore.repository.UserRepository;
+import com.example.bookstore.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class CartService implements CartIService {
     @Autowired
     CartRepository cartRepository;
@@ -22,10 +24,12 @@ public class CartService implements CartIService {
     UserRepository userRepository;
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    TokenUtil tokenUtil;
 
     //Method to add item to the cart it first Checks whether user or book present of this id if present
     //then only insert item in the cart otherwise throw exception
-    //We do cartDTO.getUserId().getUser() because in first it get userid of type user which is declare in
+    //We do cartDTO.getUserId().getUser() because in first it get userid of type user which is declared in
     //cartDTO class and second one userId is to get User id to that User class
     @Override
     public Cart addToCart(CartDTO cartDTO) {
@@ -42,9 +46,9 @@ public class CartService implements CartIService {
     //Method to get cart details by its id in the database if present otherwise throw custom exception of
 
     public Optional<Cart> getById(Long id) {
-        Optional<Cart> cartId = cartRepository.findById(id);
-        if (cartId.isPresent()) {
-            return cartId;
+        Optional<Cart> cart = cartRepository.findById(id);
+        if (cart.isPresent()) {
+            return cart;
         } else throw new CustomException("Cart Id not  present");
     }
 
@@ -59,15 +63,15 @@ public class CartService implements CartIService {
 
     @Override
     //Method to update data of Cart using Id
-    public Optional<Cart> updateById(Long cartId, CartDTO cartDTO) {
+    public Cart updateById(Long cartId, CartDTO cartDTO) {
         Optional<Cart> foundId = cartRepository.findById(cartId);
-          if (foundId.isPresent()) {
-            foundId.get().getUser().setUserID(cartDTO.getUserID());
-            foundId.get().getBook().setBookId(cartDTO.getBookId());
-//            Cart updatedCart=new Cart(cartId, foundId.get().getBook(),
-//                                            foundId.get().getUser(), cartDTO.getQuantity());
-            cartRepository.save(foundId.get());
-                 return foundId;
+        Optional<Book> book = bookRepository.findById(cartDTO.getBookId());
+        Optional<User> user = userRepository.findById(cartDTO.getUserID());
+        if (foundId.isPresent() && book.isPresent() && user.isPresent()) {
+            Cart updatedCart = new Cart(cartId, book.get(),
+                    user.get(), cartDTO.getQuantity());
+            cartRepository.save(updatedCart);
+            return updatedCart;
         } else throw new CustomException("Id not present to update quantity");
     }
 
@@ -77,6 +81,9 @@ public class CartService implements CartIService {
         Optional<Cart> foundId = cartRepository.findById(cartId);
         if (foundId.isPresent()) {
             foundId.get().setQuantity(quantity);
+            Cart cart = new Cart(foundId.get().getCartId(), foundId.get().getBook(),
+                    foundId.get().getUser(), foundId.get().getQuantity());
+            cartRepository.save(cart);
             return foundId;
         } else throw new CustomException("Id not present to update quantity");
     }

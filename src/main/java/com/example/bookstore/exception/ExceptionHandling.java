@@ -8,14 +8,16 @@ import org.springframework.validation.ObjectError;
 
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class ExceptionHandler {
+public class ExceptionHandling {
     //Method to handle all the exception while giving arguments
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException.class)
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         //Saving all the errors in the list named errorList which are happened during handling of arguments
         List<ObjectError> errorList = exception.getBindingResult().getAllErrors();
@@ -28,7 +30,7 @@ public class ExceptionHandler {
     }
 
     //This method is used to handle the custom customException while getting the Address-book and print the message
-    @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
+    @ExceptionHandler(CustomException.class)
     public ResponseEntity<ResponseDTO> handleUserException(CustomException customException) {
         ResponseDTO responseDTO = new ResponseDTO("CustomException while processing the Request is "
                 , customException.getMessage());

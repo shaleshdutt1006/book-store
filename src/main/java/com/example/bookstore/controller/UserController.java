@@ -33,9 +33,9 @@ public class UserController {
 
     }
     //Method to get user by userId
-    @GetMapping("/getbyId/{userId}")
-    public ResponseEntity<ResponseDTO> getByUserId(@PathVariable int userId) {
-        Optional<User> userDTO = userIService.getByUserId(userId);
+    @GetMapping("/getbyId")
+    public ResponseEntity<ResponseDTO> getBytoken(@RequestParam String token) {
+        Optional<User> userDTO = userIService.getByUserId(token);
         ResponseDTO responseDTO = new ResponseDTO("Get call userId successfully", userDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
 
@@ -57,14 +57,16 @@ public class UserController {
     }
     //Method to reset the password of user using emailId
     @PutMapping("/reset-password/{emailId}")
-    public ResponseEntity<ResponseDTO> resetPassword(@Valid @PathVariable String emailId, @RequestBody LoginDTO loginDTO) {
-        User searchByEmailId = userIService.resetPassword(emailId,loginDTO);
+    public ResponseEntity<ResponseDTO> resetPassword(@Valid @PathVariable String emailId,
+                                         @RequestBody LoginDTO loginDTO,@RequestParam String token) {
+        User searchByEmailId = userIService.resetPassword(emailId,loginDTO,token);
         ResponseDTO responseDTO = new ResponseDTO("Password reset successfully", searchByEmailId);
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
     //Method to update user details by using emailId
     @PutMapping("/updateByEmail")
-    public ResponseEntity<ResponseDTO> updateUserByEmail(@Valid @RequestParam String emailId, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseDTO> updateUserByEmail(@Valid @RequestParam String emailId,
+                                                         @RequestBody UserDTO userDTO) {
         User updatedUser = userIService.updateByEmailId(emailId, userDTO);
         ResponseDTO responseDTO = new ResponseDTO("Updated user successfully", updatedUser);
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);

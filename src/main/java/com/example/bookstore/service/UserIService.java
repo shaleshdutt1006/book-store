@@ -14,7 +14,7 @@ public interface UserIService {
     User registerDetails(UserDTO userDTO);
 
     //Method to get user by userId
-    Optional<User> getByUserId(int userId);
+    Optional<User> getByUserId(String token);
 
     //Method to get User by emailId
     Optional<User> getByEmailId(String emailId);
@@ -23,7 +23,7 @@ public interface UserIService {
     List<User> getAll();
 
     //Method to reset the password of user using emailId
-    User resetPassword(String emailId, LoginDTO loginDTO);
+    User resetPassword(String emailId, LoginDTO loginDTO,String token);
 
     //Method to update user details by using emailId
     User updateByEmailId(String emailId, UserDTO userDTO);
